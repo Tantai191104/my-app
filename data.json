@@ -1,0 +1,29 @@
+[
+  {
+    "playerName": "Lionel Messi",
+    "image": "url_to_messi_image",
+    "cost": 100,
+    "isCaptain": true,
+    "information": "Cầu thủ vĩ đại nhất mọi thời đại.",
+    "comments": [],
+    "team": "68520fb3e289e18f0dd12997"
+  },
+  {
+    "playerName": "Cristiano Ronaldo",
+    "image": "url_to_ronaldo_image",
+    "cost": 90,
+    "isCaptain": true,
+    "information": "Một trong những cầu thủ xuất sắc nhất lịch sử.",
+    "comments": [],
+    "team": "68520fcee289e18f0dd1299d"
+  },
+  {
+    "playerName": "Neymar Jr",
+    "image": "url_to_neymar_image",
+    "cost": 80,
+    "isCaptain": false,
+    "information": "Cầu thủ tài năng đến từ Brazil.",
+    "comments": [],
+    "team": "68520fc7e289e18f0dd1299a"
+  }
+]

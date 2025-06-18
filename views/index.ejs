@@ -1,0 +1,25 @@
+<section class="section ">
+  <div class="container">
+      <h1 class="custom-title has-text-centered">All Players</h1>
+    <div class="columns is-multiline">
+      <% players.forEach(player => { %>
+      <div class="column is-one-quarter">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="<%= player.image %>" alt="<%= player.playerName %>" />
+            </figure>
+          </div>
+          <div class="card-content">
+            <p class="title is-5"><%= player.playerName %></p>
+            <p class="subtitle is-6">
+              Team: <%= player.team && player.team.teamName ?
+              player.team.teamName : 'No Team' %>
+            </p>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</section>

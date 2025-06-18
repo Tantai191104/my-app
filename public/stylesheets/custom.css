@@ -1,0 +1,30 @@
+body {
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.custom-title {
+  background: linear-gradient(to right, #00d1b2, #23d160);
+  color: white;
+  text-align: center;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Hover effect */
+.custom-title:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.custom-section {
+  background: linear-gradient(to right, #00d1b2, #23d160);
+  padding: 2rem 1rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  color: white;
+}
