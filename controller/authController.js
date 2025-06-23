@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Member = require("../models/members");
 const bcrypt = require("bcrypt");
 
-exports.SignUp = async (req, res) => {
+exports.signUp = async (req, res) => {
   try {
     const { membername, password, name, YOB, isAdmin } = req.body;
 
@@ -10,7 +10,7 @@ exports.SignUp = async (req, res) => {
     const existingUser = await Member.findOne({ membername });
     if (existingUser) {
       return res.status(400).json({ message: "Member already exists" });
-    } 
+    }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,45 +36,46 @@ exports.SignUp = async (req, res) => {
   }
 };
 
-exports.SignIn = async (req, res) => {
+exports.signIn = async (req, res) => {
   try {
-    const { membername, password } = req.body;
+    const { name, password } = req.body;
 
-    // 1. Kiểm tra người dùng có tồn tại không
-    const member = await Member.findOne({ membername });
+    // Tìm thành viên theo tên đăng nhập
+    const member = await Member.findOne({ name });
     if (!member) {
-      return res.status(400).json({ message: 'Tài khoản không tồn tại' });
+      req.session.message = "Account does not exist.";
+      return res.redirect("/api/auth/login");
     }
 
-    // 2. So sánh mật khẩu
+    // So sánh mật khẩu đã nhập với mật khẩu đã mã hóa trong DB
     const isMatch = await bcrypt.compare(password, member.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Sai mật khẩu' });
+      req.session.message = "Incorrect password.";
+      return res.redirect("/api/auth/login");
     }
 
-    // 3. Tạo JWT token
-    const token = jwt.sign(
-      {
-        id: member._id,
-        membername: member.membername,
-        isAdmin: member.isAdmin
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '3d' } // token hết hạn sau 3 ngày
-    );
+    // Đăng nhập thành công → lưu đầy đủ thông tin vào session
+    req.session.user = {
+      membername: member.membername,
+      name: member.name,
+      YOB: member.YOB,
+      isAdmin: member.isAdmin,
+    };
 
-    // 4. Trả về token và thông tin user
-    res.status(200).json({
-      token,
-      member: {
-        id: member._id,
-        membername: member.membername,
-        name: member.name,
-        isAdmin: member.isAdmin
-      }
-    });
+    // Xóa message lỗi cũ nếu có
+    delete req.session.message;
+
+    // Chuyển về trang chính
+    res.redirect("/");
   } catch (error) {
-    console.error('SignIn error:', error);
-    res.status(500).json({ message: 'Lỗi server' });
+    console.error("SignIn error:", error);
+    req.session.message = "Server error. Please try again.";
+    res.redirect("/api/auth/login");
   }
+};
+
+exports.showLoginForm = (req, res) => {
+  const message = req.session.message || null;
+  delete req.session.message;
+  res.render("login", { message, layout: false });
 };

@@ -5,7 +5,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const expressLayouts = require("express-ejs-layouts");
-
+const session = require("express-session");
 // import routee
 var playersRouter = require("./routes/playerRoute");
 const authRouter = require("./routes/auth");
@@ -24,14 +24,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// error favicon.ico 
+// error favicon.ico
 app.get("/favicon.ico", (req, res) => res.status(204).end());
+
+// express session
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 
 // export routes
 app.use("/", playersRouter);
 app.use("/teams", teamRouter);
-app.use("/player", playersRouter);
-
+app.use("/api/auth", authRouter);
 // connect mongodb
 mongoose.connect(Uri).then((db) => {
   console.log("Connect OK !");
@@ -39,9 +48,6 @@ mongoose.connect(Uri).then((db) => {
 
 // set layout
 app.set("layout", "layout");
-
-// export routes
-app.use("/api/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
