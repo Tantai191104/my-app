@@ -1,25 +1,71 @@
-<section class="section ">
-  <div class="container">
-      <h1 class="custom-title has-text-centered">All Players</h1>
-    <div class="columns is-multiline">
-      <% players.forEach(player => { %>
-      <div class="column is-one-quarter">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="<%= player.image %>" alt="<%= player.playerName %>" />
-            </figure>
-          </div>
-          <div class="card-content">
-            <p class="title is-5"><%= player.playerName %></p>
-            <p class="subtitle is-6">
-              Team: <%= player.team && player.team.teamName ?
-              player.team.teamName : 'No Team' %>
-            </p>
-          </div>
-        </div>
-      </div>
-      <% }); %>
+
+<div class="container py-5">
+  <!-- Tiêu đề -->
+  <h1 class="text-center mb-5 text-primary fw-bold display-5 custom-title">
+    All Players
+  </h1>
+
+  <!-- Form tìm kiếm và lọc -->
+  <form action="/" method="GET" class="row g-3 align-items-end mb-5">
+    <div class="col-md-6">
+      <label for="search" class="form-label">Search by player name</label>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        class="form-control"
+        placeholder="Enter name..."
+        value="<%= typeof query?.search !== 'undefined' ? query.search : '' %>"
+      />
     </div>
+
+    <div class="col-md-4">
+      <label for="team" class="form-label">Filter by team</label>
+      <select id="team" name="team" class="form-select">
+        <option value="">All Teams</option>
+        <% teams.forEach(team => { %>
+          <option value="<%= team._id %>" <%= query?.team === String(team._id) ? 'selected' : '' %>>
+            <%= team.teamName %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+  </form>
+
+  <!-- Danh sách cầu thủ -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <% players.forEach(player => { %>
+      <div class="col">
+        <a
+          href="/player/<%= player._id %>"
+          class="text-decoration-none text-dark"
+        >
+          <div class="card h-100 shadow-sm hover-shadow border-0 transition"
+            style="transition: transform 0.3s; border-radius: 12px;">
+            <img
+              src="<%= player.image %>"
+              class="card-img-top object-fit-contain fixed-img"
+              alt="<%= player.playerName %>"
+              style="height: 200px; object-fit: contain; background-color: #f8f9fa;"
+            />
+            <div class="card-body" style="line-height: 1.6;">
+              <h5 class="card-title text-primary fw-bold" style="font-size: 1.1rem;">
+                <%= player.playerName %>
+              </h5>
+              <p class="card-text text-muted mb-0">
+                <strong>Team:</strong>
+                <span class="text-success fw-semibold">
+                  <%= player.team?.teamName || 'No Team' %>
+                </span>
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% }); %>
   </div>
-</section>
+</div>

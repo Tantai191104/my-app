@@ -5,9 +5,9 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const expressLayouts = require("express-ejs-layouts");
+
 // import routee
 var playersRouter = require("./routes/playerRoute");
-var usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const teamRouter = require("./routes/teamRoute");
 
@@ -24,10 +24,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// error favicon.ico 
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
 // export routes
 app.use("/", playersRouter);
-app.use("/users", usersRouter);
 app.use("/teams", teamRouter);
+app.use("/player", playersRouter);
 
 // connect mongodb
 mongoose.connect(Uri).then((db) => {

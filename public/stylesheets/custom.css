@@ -1,6 +1,6 @@
 body {
-  padding: 10px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  
 }
 
 .custom-title {
@@ -21,10 +21,13 @@ body {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
-.custom-section {
-  background: linear-gradient(to right, #00d1b2, #23d160);
-  padding: 2rem 1rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  color: white;
-}
+  .hover-shadow:hover {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+  }
+    .fixed-img {
+    height: 200px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+  }

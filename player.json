@@ -1,0 +1,42 @@
+[
+  {
+    "playerName": "Lionel Messi",
+    "image": "https://example.com/messi.jpg",
+    "cost": 120,
+    "isCaptain": true,
+    "information": "World-class forward from Argentina.",
+    "team": "60f6c1ec2f9b9b2f4c1e1a9b"
+  },
+  {
+    "playerName": "Cristiano Ronaldo",
+    "image": "https://example.com/ronaldo.jpg",
+    "cost": 110,
+    "isCaptain": false,
+    "information": "Legendary Portuguese striker.",
+    "team": "60f6c1ec2f9b9b2f4c1e1a9c"
+  },
+  {
+    "playerName": "Kylian Mbappé",
+    "image": "https://example.com/mbappe.jpg",
+    "cost": 95,
+    "isCaptain": false,
+    "information": "French forward with great speed.",
+    "team": "60f6c1ec2f9b9b2f4c1e1a9d"
+  },
+  {
+    "playerName": "Kevin De Bruyne",
+    "image": "https://example.com/debruyne.jpg",
+    "cost": 100,
+    "isCaptain": false,
+    "information": "Midfield maestro from Belgium.",
+    "team": "60f6c1ec2f9b9b2f4c1e1a9e"
+  },
+  {
+    "playerName": "Virgil van Dijk",
+    "image": "https://example.com/vandijk.jpg",
+    "cost": 85,
+    "isCaptain": true,
+    "information": "Solid defender from Netherlands.",
+    "team": "60f6c1ec2f9b9b2f4c1e1a9f"
+  }
+]

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const commentSchema = require("../models/comments"); // Đây phải export là schema, không phải model
+const commentSchema = require("../models/comments");
 
 const Schema = mongoose.Schema;
 
