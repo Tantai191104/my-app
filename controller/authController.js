@@ -9,7 +9,8 @@ exports.signUp = async (req, res) => {
     // Kiểm tra tên người dùng đã tồn tại chưa
     const existingUser = await Member.findOne({ membername });
     if (existingUser) {
-      return res.status(400).json({ message: "Member already exists" });
+      req.session.message = { type: "danger", text: "Account already exists." };
+      return res.redirect("/api/auth/register");
     }
 
     // Hash password
@@ -25,11 +26,11 @@ exports.signUp = async (req, res) => {
     });
 
     await newMember.save();
-
-    res.status(201).json({
-      message: "Member created successfully",
-      membername: newMember.membername,
-    });
+    req.session.message = {
+      type: "success",
+      text: "Account created successfully!",
+    };
+    return res.redirect("/api/auth/login");
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
@@ -38,19 +39,18 @@ exports.signUp = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   try {
-    const { name, password } = req.body;
-
+    const { membername, password } = req.body;
     // Tìm thành viên theo tên đăng nhập
-    const member = await Member.findOne({ name });
+    const member = await Member.findOne({ membername });
     if (!member) {
-      req.session.message = "Account does not exist.";
+      req.session.message = { type: "danger", text: "Account does not exist." };
       return res.redirect("/api/auth/login");
     }
 
     // So sánh mật khẩu đã nhập với mật khẩu đã mã hóa trong DB
     const isMatch = await bcrypt.compare(password, member.password);
     if (!isMatch) {
-      req.session.message = "Incorrect password.";
+      req.session.message = { type: "danger", text: "Incorrect password." };
       return res.redirect("/api/auth/login");
     }
 
@@ -78,4 +78,10 @@ exports.showLoginForm = (req, res) => {
   const message = req.session.message || null;
   delete req.session.message;
   res.render("login", { message, layout: false });
+};
+
+exports.showRegisterForm = (req, res) => {
+  const message = req.session.message || null;
+  delete req.session.message;
+  res.render("register", { message, layout: false });
 };
