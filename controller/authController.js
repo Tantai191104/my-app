@@ -53,18 +53,16 @@ exports.signIn = async (req, res) => {
       req.session.message = { type: "danger", text: "Incorrect password." };
       return res.redirect("/api/auth/login");
     }
-
     // Đăng nhập thành công → lưu đầy đủ thông tin vào session
     req.session.user = {
+      _id: member._id,
       membername: member.membername,
       name: member.name,
       YOB: member.YOB,
       isAdmin: member.isAdmin,
     };
-
     // Xóa message lỗi cũ nếu có
     delete req.session.message;
-
     // Chuyển về trang chính
     res.redirect("/");
   } catch (error) {
@@ -75,13 +73,14 @@ exports.signIn = async (req, res) => {
 };
 
 exports.showLoginForm = (req, res) => {
-  const message = req.session.message || null;
-  delete req.session.message;
-  res.render("login", { message, layout: false });
+  res.render("login", { layout: false });
 };
 
 exports.showRegisterForm = (req, res) => {
-  const message = req.session.message || null;
-  delete req.session.message;
-  res.render("register", { message, layout: false });
+  res.render("register", { layout: false });
+};
+
+exports.logOut = (req, res) => {
+  delete req.session.user;
+  res.redirect("/");
 };

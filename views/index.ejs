@@ -4,7 +4,6 @@
   <h1 class="text-center mb-5 text-primary fw-bold display-5 custom-title">
     All Players
   </h1>
-
   <!-- Form tìm kiếm và lọc -->
   <form action="/" method="GET" class="row g-3 align-items-end mb-5">
     <div class="col-md-6">
@@ -42,7 +41,7 @@
     <% players.forEach(player => { %>
       <div class="col">
         <a
-          href="/player/<%= player._id %>"
+          href="/players/<%= player._id %>"
           class="text-decoration-none text-dark"
         >
           <div class="card h-100 shadow-sm hover-shadow border-0 transition"
@@ -70,7 +69,7 @@
     <% }); %>
   </div>
 <% } else { %>
-  <div class="text-center text-light fs-4 mt-5">
+  <div class="text-center text-dark fs-4 mt-5">
     No matching players found.
   </div>
 <% } %>

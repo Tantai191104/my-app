@@ -1,0 +1,40 @@
+<div class="container py-5">
+  <h2 class="text-center text-primary mb-4">👥 All Members</h2>
+
+  <% if (members.length > 0) { %>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Year of Birth</th>
+          <th>Role</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% members.forEach((member, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= member.membername %></td>
+          <td><%= member.name %></td>
+          <td><%= member.YOB %></td>
+          <td>
+            <% if (member.isAdmin) { %>
+            <span class="badge bg-success">Admin</span>
+            <% } else { %>
+            <span class="badge bg-secondary">Member</span>
+            <% } %>
+          </td>
+          <td><%= new Date(member.createdAt).toLocaleDateString('vi-VN') %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } else { %>
+  <div class="text-center mt-4 fs-5 text-muted">No members found.</div>
+  <% } %>
+</div>

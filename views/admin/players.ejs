@@ -1,0 +1,76 @@
+<div class="container py-5">
+  <h2 class="text-center mb-4 text-primary">⚽ All Players</h2>
+
+  <% if (players.length > 0) { %>
+  <div class="table-responsive">
+    <table
+      class="table table-bordered table-striped align-middle shadow-sm rounded-4 overflow-hidden"
+    >
+      <thead class="table-primary text-center">
+        <tr>
+          <th class="px-4 py-3">#</th>
+          <th class="px-4 py-3">Image</th>
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3">Team</th>
+          <th class="px-4 py-3">Cost</th>
+          <th class="px-4 py-3">Captain</th>
+          <th class="px-4 py-3">Created At</th>
+          <th class="px-4 py-3">Action</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <% players.forEach((player, index) => { %>
+        <tr>
+          <td class="px-4 py-3 lh-lg fs-6"><%= index + 1 %></td>
+          <td class="px-4 py-3 lh-lg">
+            <img
+              src="<%= player.image %>"
+              alt="<%= player.playerName %>"
+              style="height: 50px"
+              class="rounded-2 border"
+            />
+          </td>
+          <td class="px-4 py-3 lh-lg fs-6"><%= player.playerName %></td>
+          <td class="px-4 py-3 lh-lg fs-6">
+            <%= player.team?.teamName || "No Team" %>
+          </td>
+          <td class="px-4 py-3 lh-lg fs-6"><%= player.cost %></td>
+          <td class="px-4 py-3 lh-lg fs-6">
+            <% if (player.isCaptain) { %>
+            <span class="badge bg-success">Yes</span>
+            <% } else { %>
+            <span class="badge bg-secondary">No</span>
+            <% } %>
+          </td>
+          <td class="px-4 py-3 lh-lg fs-6">
+            <%= new Date(player.createdAt).toLocaleDateString("vi-VN") %>
+          </td>
+          <td class="px-4 py-3 lh-lg">
+            <button
+              class="btn btn-warning btn-sm me-1"
+              data-bs-toggle="modal"
+              data-bs-target="#editPlayerModal-<%= player._id %>"
+            >
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#deletePlayerModal-<%= player._id %>"
+            >
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <% players.forEach(player => { %> <%-
+  include("../partials/editPlayerModal.ejs", { player, teams }) %> <%-
+  include("../partials/deletePlayerConfirmModal.ejs", { player }) %> <% }) %> <%
+  } else { %>
+  <div class="text-center fs-5 mt-4 text-muted">No players found.</div>
+  <% } %>
+</div>

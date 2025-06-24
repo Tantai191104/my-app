@@ -7,7 +7,7 @@ commentSchema = new Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Members",
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }

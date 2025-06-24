@@ -9,8 +9,10 @@ const session = require("express-session");
 // import routee
 var playersRouter = require("./routes/playerRoute");
 const authRouter = require("./routes/auth");
-const teamRouter = require("./routes/teamRoute");
-
+const memberRouter = require("./routes/memberRoute");
+const commentRouter = require("./routes/commentRoutes");
+const adminRouter = require("./routes/adminRouter");
+const { getAllPlayer } = require("./controller/playerController");
 var app = express();
 const mongoose = require("mongoose");
 // view engine setup
@@ -21,6 +23,9 @@ app.use(expressLayouts);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const methodOverride = require("method-override");
+const accountRouter = require("./routes/accountRoute");
+app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -37,10 +42,22 @@ app.use(
   })
 );
 
+// set locals res for render
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  res.locals.message = req.session.message;
+  delete req.session.message;
+  next();
+});
+
 // export routes
-app.use("/", playersRouter);
-app.use("/teams", teamRouter);
+app.get("/", getAllPlayer);
+app.use("/accounts", accountRouter);
+app.use("/players", playersRouter);
+app.use("/teams", adminRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/member", memberRouter);
+app.use("/comments", commentRouter);
 // connect mongodb
 mongoose.connect(Uri).then((db) => {
   console.log("Connect OK !");

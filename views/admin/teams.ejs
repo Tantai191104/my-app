@@ -1,0 +1,74 @@
+<main class="container mt-5" style="max-width: 850px">
+  <h2 class="mb-4 text-primary text-center">⚽ Team Management</h2>
+
+  <!-- Add team form -->
+  <form action="/teams/add" method="POST" class="row g-2 mb-4">
+    <div class="col-9">
+      <input
+        type="text"
+        name="teamName"
+        class="form-control border-primary"
+        placeholder="Enter new team name"
+        required
+      />
+    </div>
+    <div class="col-3 d-grid">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Add
+      </button>
+    </div>
+  </form>
+
+  <!-- Team table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle shadow-sm">
+      <thead class="table-light text-center">
+        <tr>
+          <th style="width: 10%">#</th>
+          <th style="width: 45%">Team Name</th>
+          <th style="width: 45%">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% teams.forEach((team, index) => { %>
+        <tr>
+          <td class="text-center"><%= index + 1 %></td>
+          <td><%= team.teamName %></td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <!-- Edit Form -->
+              <form
+                action="/teams/edit/<%= team._id %>?_method=PUT"
+                method="POST"
+                class="d-flex align-items-center gap-2"
+              >
+                <input
+                  name="teamName"
+                  value="<%= team.teamName %>"
+                  class="form-control form-control-sm"
+                  style="max-width: 150px"
+                  required
+                />
+                <button class="btn btn-sm btn-outline-primary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </form>
+
+              <!-- Delete Button -->
+              <form  action="/teams/delete/<%= team._id %>?_method=DELETE" method="POST">
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  onclick="return confirm('Are you sure you want to delete this team?')"
+                  title="Delete"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>

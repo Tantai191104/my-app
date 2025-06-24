@@ -1,0 +1,131 @@
+<div
+  class="card bg-dark text-white rounded-4 mx-auto border-0 shadow"
+  style="max-width: 1000px"
+>
+  <div class="card-body px-4 py-4">
+    <h4 class="fw-bold mb-4 fs-3 border-bottom border-warning pb-2">
+      💬 Comments
+    </h4>
+
+    <!-- Login Prompt -->
+    <% if (!user) { %>
+    <div
+      class="alert alert-warning d-flex justify-content-between align-items-center"
+    >
+      <div>🔒 <strong>Please login to leave a comment.</strong></div>
+      <a href="/api/auth/login" class="btn btn-sm btn-primary">Login</a>
+    </div>
+    <% } %>
+
+    <!-- Comment Form -->
+    <% if (user) { const hasCommented = player.comments.some(c =>
+    c.author?._id?.toString() === user._id.toString()); if (!hasCommented) { %>
+    <form action="/players/<%= player._id %>/comment" method="POST" class="mb-5">
+      <h5 class="fw-bold fs-4 text-info">📝 Leave a comment</h5>
+
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating (1–3)</label>
+        <select
+          class="form-select bg-dark text-white border-secondary"
+          id="rating"
+          name="rating"
+          required
+        >
+          <option value="">Choose...</option>
+          <% for (let i = 1; i <= 3; i++) { %>
+          <option value="<%= i %>"><%= i %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="content" class="form-label">Your feedback</label>
+        <textarea
+          class="form-control bg-dark text-white border-secondary"
+          id="content"
+          name="content"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-warning">
+        <i class="bi bi-send me-1"></i> Submit
+      </button>
+    </form>
+    <% }} %>
+
+    <!-- Comment List -->
+    <% if (player.comments && player.comments.length > 0) { %>
+    <ul class="list-unstyled">
+      <% player.comments.forEach(comment => { %> <% const isOwner = user &&
+      comment.author?._id?.toString() === user._id?.toString(); %>
+      <li
+        id="comment-<%= comment._id %>"
+        class="mb-4 pb-3 border-bottom border-secondary"
+        style="font-size: 1.1rem; line-height: 1.7"
+      >
+        <div class="ps-1">
+          <p class="mb-1">
+            👤
+            <strong class="text-warning"
+              ><%= comment.author?.name || 'Anonymous' %></strong
+            >
+            <% if (comment.author?.role) { %>
+            <span class="badge bg-info bg-opacity-25 text-info ms-2"
+              ><%= comment.author.role %></span
+            >
+            <% } %>
+            <small class="text-muted ms-2"
+              >• <%= new Date(comment.createdAt).toLocaleDateString('vi-VN')
+              %></small
+            >
+          </p>
+
+          <p class="mb-1">
+            <strong class="text-white">Rating:</strong>
+            <% for (let i = 1; i <= 3; i++) { %>
+            <span
+              class="<%= i <= comment.rating ? 'text-warning' : 'text-muted' %>"
+              >&#9733;</span
+            >
+            <% } %>
+          </p>
+
+          <p class="mb-1">
+            <strong class="text-white">Content:</strong>
+            <span><%= comment.content %></span>
+          </p>
+
+          <% if (isOwner) { %>
+          <div class="mt-2 d-flex gap-2">
+            <a
+              href="#"
+              class="btn btn-sm btn-outline-info"
+              data-bs-toggle="modal"
+              data-bs-target="#editCommentModal-<%= comment._id %>"
+            >
+              <i class="bi bi-pencil"></i> Edit
+            </a>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteCommentModal-<%= comment._id %>"
+            >
+              Delete
+            </button>
+          </div>
+          <% } %> <%- include('../partials/editCommentModal.ejs', { comment:
+          comment, player: player }) %> <% if (isOwner) { %> <%-
+          include('../partials/deleteCommentModal.ejs', { comment: comment,
+          player: player }) %> <% } %>
+        </div>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p class="text-muted">No comments yet.</p>
+    <% } %>
+  </div>
+</div>

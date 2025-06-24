@@ -27,41 +27,37 @@
         style="font-size: 1rem; line-height: 1.8"
       >
         <li class="nav-item">
-          <a class="nav-link active px-3" aria-current="page" href="#">Home</a>
+          <a class="nav-link active px-3" aria-current="page" href="/">Home</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link px-3" href="#">Documentation</a>
+          <a class="nav-link px-3" href="/api/member/profile">Profile</a>
         </li>
 
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle px-3"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            More
-          </a>
-          <ul
-            class="dropdown-menu"
-            aria-labelledby="navbarDropdown"
-            style="font-size: 0.95rem"
-          >
-            <li><a class="dropdown-item" href="#">About</a></li>
-            <li><a class="dropdown-item active" href="#">Jobs</a></li>
-            <li><a class="dropdown-item" href="#">Contact</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Report an issue</a></li>
-          </ul>
+        <% if (user && user.isAdmin) { %>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="/teams">Teams</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="/players">Players</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="/accounts">Accounts</a>
+        </li>
+        <% } %>
       </ul>
-
       <div class="d-flex align-items-center" style="gap: 0.5rem">
-        <a href="#" class="btn btn-sm btn-primary">Sign up</a>
-        <a href="/api/auth/login" class="btn btn-sm btn-outline-secondary">Log in</a>
+        <% if (typeof user !== "undefined" && user) { %>
+        <span class="me-2">Welcome, <strong><%= user.name %></strong></span>
+        <a href="/api/auth/logout" class="btn btn-sm btn-outline-danger"
+          >Log out</a
+        >
+        <% } else { %>
+        <a href="/api/auth/register" class="btn btn-sm btn-primary">Sign up</a>
+        <a href="/api/auth/login" class="btn btn-sm btn-outline-secondary"
+          >Log in</a
+        >
+        <% } %>
       </div>
     </div>
   </div>

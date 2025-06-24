@@ -25,5 +25,5 @@ const memberSchema = new Schema(
   },
   { timestamps: true }
 );
-const Member = mongoose.model("Member", memberSchema);
+const Member = mongoose.model("Members", memberSchema);
 module.exports = Member;
